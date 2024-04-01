@@ -4,24 +4,30 @@ pipeline {
         jdk 'java17'
         maven 'Maven3'
     }
-    stage("cleanup workspace"){
-            steps {
-            cleanws ()
-            }
-    }
-    stage("Checkout from SCM"){
-            steps {
-            git branch: 'main' , CredentialsId: 'github' , url: 'https://github.com/AWS-Trainees-Practice/NEW_APP_PROJECT.git'
-            }
-    }
-    stage("Build Application"){
-        stage {
-            sh "mvn clean package"
+    stages{
+        stage("Cleanup Workspace"){
+                steps {
+                cleanWs()
+                }
         }
-    }
-    stage("Test Application")
-        steps {
-              sh "mvn test"
+
+        stage("Checkout from SCM"){
+                steps {
+                    git branch: 'main', credentialsId: 'github', url: 'https://github.com/AWS-Trainees-Practice/NEW_APP_PROJECT.git'
+                }
         }
+
+        stage("Build Application"){
+            steps {
+                sh "mvn clean package"
+            }
+
+       }
+
+       stage("Test Application"){
+           steps {
+                 sh "mvn test"
+           }
+       }      
     }
 }
